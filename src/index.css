@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,59 +6,61 @@
 
 @layer base {
   :root {
-    --background: 230 25% 7%;
-    --foreground: 220 20% 92%;
+    --background: 40 30% 97%;
+    --foreground: 240 10% 15%;
 
-    --card: 230 22% 11%;
-    --card-foreground: 220 20% 92%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 15%;
 
-    --popover: 230 22% 11%;
-    --popover-foreground: 220 20% 92%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 15%;
 
-    --primary: 190 95% 55%;
-    --primary-foreground: 230 25% 7%;
+    --primary: 340 65% 65%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 325 85% 60%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 260 50% 75%;
+    --secondary-foreground: 260 40% 20%;
 
-    --muted: 230 18% 16%;
-    --muted-foreground: 220 10% 55%;
+    --muted: 240 15% 93%;
+    --muted-foreground: 240 5% 50%;
 
-    --accent: 270 80% 65%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 200 60% 72%;
+    --accent-foreground: 200 50% 15%;
 
     --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 230 15% 18%;
-    --input: 230 15% 18%;
-    --ring: 190 95% 55%;
+    --border: 240 10% 90%;
+    --input: 240 10% 90%;
+    --ring: 340 65% 65%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    --sidebar-background: 230 22% 9%;
-    --sidebar-foreground: 220 20% 92%;
-    --sidebar-primary: 190 95% 55%;
-    --sidebar-primary-foreground: 230 25% 7%;
-    --sidebar-accent: 230 18% 16%;
-    --sidebar-accent-foreground: 220 20% 92%;
-    --sidebar-border: 230 15% 18%;
-    --sidebar-ring: 190 95% 55%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 10% 15%;
+    --sidebar-primary: 340 65% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 15% 95%;
+    --sidebar-accent-foreground: 240 10% 15%;
+    --sidebar-border: 240 10% 92%;
+    --sidebar-ring: 340 65% 65%;
 
     /* Custom tokens */
-    --neon-glow: 190 95% 55%;
-    --neon-pink: 325 85% 60%;
-    --neon-purple: 270 80% 65%;
-    --surface-elevated: 230 20% 14%;
-    --gradient-neon: linear-gradient(135deg, hsl(190 95% 55%), hsl(270 80% 65%));
-    --gradient-pink: linear-gradient(135deg, hsl(325 85% 60%), hsl(270 80% 65%));
-    --shadow-neon: 0 0 20px hsl(190 95% 55% / 0.3);
-    --shadow-pink: 0 0 20px hsl(325 85% 60% / 0.3);
+    --rose: 340 65% 65%;
+    --lavender: 260 50% 75%;
+    --sky: 200 60% 72%;
+    --peach: 20 80% 80%;
+    --mint: 160 40% 75%;
+    --surface-elevated: 240 20% 98%;
+    --gradient-soft: linear-gradient(135deg, hsl(340 65% 65%), hsl(260 50% 75%));
+    --gradient-warm: linear-gradient(135deg, hsl(20 80% 80%), hsl(340 65% 65%));
+    --shadow-soft: 0 4px 24px hsl(340 65% 65% / 0.1);
+    --shadow-card: 0 2px 16px hsl(240 10% 50% / 0.06);
   }
 
   .dark {
-    --background: 230 25% 7%;
-    --foreground: 220 20% 92%;
+    --background: 240 10% 10%;
+    --foreground: 0 0% 95%;
   }
 }
 
@@ -77,22 +79,27 @@
 }
 
 @layer utilities {
-  .neon-text {
-    text-shadow: 0 0 10px hsl(var(--neon-glow) / 0.6), 0 0 30px hsl(var(--neon-glow) / 0.3);
-  }
-
-  .neon-border {
-    box-shadow: 0 0 10px hsl(var(--neon-glow) / 0.2), inset 0 0 10px hsl(var(--neon-glow) / 0.05);
+  .soft-glow {
+    box-shadow: 0 0 20px hsl(var(--rose) / 0.12), 0 2px 12px hsl(240 10% 50% / 0.05);
   }
 
   .glass {
-    @apply bg-card/60 backdrop-blur-xl border border-border/50;
+    @apply bg-card/80 backdrop-blur-xl border border-border/60;
+    box-shadow: 0 2px 16px hsl(240 10% 50% / 0.06);
   }
 
   .gradient-text {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300;
+  }
+  .card-hover:hover {
+    box-shadow: 0 8px 30px hsl(var(--rose) / 0.12);
+    transform: translateY(-2px);
   }
 }

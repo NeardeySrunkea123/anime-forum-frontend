@@ -15,7 +15,7 @@ export default {
     extend: {
       fontFamily: {
         display: ["Outfit", "sans-serif"],
-        body: ["Space Grotesk", "sans-serif"],
+        body: ["DM Sans", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -52,9 +52,11 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         "surface-elevated": "hsl(var(--surface-elevated))",
-        "neon-glow": "hsl(var(--neon-glow))",
-        "neon-pink": "hsl(var(--neon-pink))",
-        "neon-purple": "hsl(var(--neon-purple))",
+        rose: "hsl(var(--rose))",
+        lavender: "hsl(var(--lavender))",
+        sky: "hsl(var(--sky))",
+        peach: "hsl(var(--peach))",
+        mint: "hsl(var(--mint))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -82,18 +84,13 @@ export default {
         },
         "float": {
           "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-6px)" },
-        },
-        "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 10px hsl(190 95% 55% / 0.3)" },
-          "50%": { boxShadow: "0 0 25px hsl(190 95% 55% / 0.5)" },
+          "50%": { transform: "translateY(-4px)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "float": "float 3s ease-in-out infinite",
-        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
       },
     },
   },

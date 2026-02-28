@@ -13,17 +13,17 @@ const AnimeListPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-10">
-      <h1 className="text-3xl font-display font-black mb-2 gradient-text">Anime List</h1>
-      <p className="text-muted-foreground mb-8">Discover and track your favorite anime series.</p>
+      <h1 className="text-3xl font-display font-extrabold mb-2 gradient-text">Anime List</h1>
+      <p className="text-muted-foreground text-sm mb-8">Discover and track your favorite anime series.</p>
 
-      <div className="flex gap-2 mb-8">
+      <div className="flex gap-1.5 mb-8">
         {filters.map((f) => (
           <button
             key={f}
             onClick={() => setActiveFilter(f)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
               activeFilter === f
-                ? "bg-primary text-primary-foreground"
+                ? "bg-primary text-primary-foreground shadow-[var(--shadow-soft)]"
                 : "bg-muted text-muted-foreground hover:text-foreground"
             }`}
           >
