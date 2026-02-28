@@ -3,7 +3,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "@/components/Navbar";
 import Index from "./pages/Index";
+import AnimeList from "./pages/AnimeList";
+import Forum from "./pages/Forum";
+import TopicDetail from "./pages/TopicDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -14,9 +18,12 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/anime" element={<AnimeList />} />
+          <Route path="/forum" element={<Forum />} />
+          <Route path="/forum/:id" element={<TopicDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
