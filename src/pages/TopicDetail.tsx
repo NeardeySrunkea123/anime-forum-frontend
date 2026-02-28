@@ -38,13 +38,13 @@ const TopicDetail = () => {
         <ArrowLeft className="w-4 h-4" /> Back to Forum
       </Link>
 
-      <div className="glass rounded-xl p-6 mb-6">
+      <div className="glass rounded-2xl p-6 mb-6">
         <div className="flex items-center gap-3 mb-3">
           <span className="text-3xl">{topic.avatar}</span>
           <div>
             <h1 className="text-xl font-display font-bold text-foreground">{topic.title}</h1>
             <p className="text-xs text-muted-foreground">
-              Posted by <span className="text-primary">{topic.author}</span> • {topic.lastActivity}
+              Posted by <span className="text-primary font-medium">{topic.author}</span> · {topic.lastActivity}
             </p>
           </div>
         </div>
@@ -53,39 +53,37 @@ const TopicDetail = () => {
         </div>
       </div>
 
-      {/* Comments */}
       <div className="space-y-3 mb-6">
         {comments.map((c) => (
-          <div key={c.id} className="bg-card rounded-xl p-4 border border-border/40">
+          <div key={c.id} className="bg-card rounded-2xl p-4 border border-border/40">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-lg">{c.avatar}</span>
               <span className="text-sm font-semibold text-foreground">{c.author}</span>
               <span className="text-xs text-muted-foreground">{c.timestamp}</span>
             </div>
-            <p className="text-sm text-foreground/90 leading-relaxed">{c.content}</p>
-            <button className="flex items-center gap-1 mt-3 text-xs text-muted-foreground hover:text-secondary transition-colors">
+            <p className="text-sm text-foreground/85 leading-relaxed">{c.content}</p>
+            <button className="flex items-center gap-1 mt-3 text-xs text-muted-foreground hover:text-primary transition-colors">
               <Heart className="w-3.5 h-3.5" /> {c.likes}
             </button>
           </div>
         ))}
       </div>
 
-      {/* New Comment */}
-      <div className="glass rounded-xl p-4">
+      <div className="glass rounded-2xl p-4">
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Write a comment..."
           rows={3}
-          className="w-full bg-muted rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground border border-border focus:border-primary focus:outline-none resize-none mb-3"
+          className="w-full bg-muted/50 rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground border border-border focus:border-primary/50 focus:outline-none resize-none mb-3"
         />
         <div className="flex justify-end">
           <button
             onClick={handlePost}
             disabled={!newComment.trim()}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:brightness-105 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
           >
-            <Send className="w-4 h-4" /> Post Comment
+            <Send className="w-4 h-4" /> Post
           </button>
         </div>
       </div>
