@@ -17,7 +17,7 @@ export default function CommentForm({ threadId, onSuccess }: Props) {
     try {
       setSubmitting(true);
 
-      const res = await fetch("http://localhost:3003/api/posts", {
+      const res = await fetch("http://152.42.177.225/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

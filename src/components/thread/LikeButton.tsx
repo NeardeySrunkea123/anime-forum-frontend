@@ -16,7 +16,7 @@ export default function LikeButton({ postId, onRefresh }: Props) {
       setLoading(true);
 
       const res = await fetch(
-        `http://localhost:3003/api/posts/${postId}/like`,
+        `http://152.42.177.225/api/posts/${postId}/like`,
         {
           method: liked ? "DELETE" : "POST",
           headers: {
