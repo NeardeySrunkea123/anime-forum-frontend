@@ -11,7 +11,7 @@ export default function ThreadDetailPage() {
   const [loading, setLoading] = useState(true);
 
   const fetchThread = async () => {
-    const res = await fetch(`http://localhost:3003/api/threads/${id}`);
+    const res = await fetch(`http://152.42.177.225/api/threads/${id}`);
     const result = await res.json();
 
     if (result.success) {
@@ -20,7 +20,7 @@ export default function ThreadDetailPage() {
   };
 
   const fetchPosts = async () => {
-    const res = await fetch(`http://localhost:3003/api/threads/${id}/posts`);
+    const res = await fetch(`http://152.42.177.225/api/threads/${id}/posts`);
     const result = await res.json();
 
     if (result.success) {

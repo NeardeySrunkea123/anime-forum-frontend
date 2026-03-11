@@ -29,7 +29,7 @@ const AnimeDetailPage = () => {
   useEffect(() => {
     const fetchAnimeDetail = async () => {
       try {
-        const res = await fetch(`http://localhost:3003/api/anime/${id}`);
+        const res = await fetch(`http://152.42.177.225/api/anime/${id}`);
         const result = await res.json();
 
         if (result.success) {
@@ -83,7 +83,7 @@ const AnimeDetailPage = () => {
         content: form.content,
       };
 
-      const res = await fetch("http://localhost:3003/api/threads", {
+      const res = await fetch("http://152.42.177.225/api/threads", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
