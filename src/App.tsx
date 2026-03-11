@@ -12,6 +12,10 @@ import AnimeListPage from "@/pages/AnimeList";
 import AnimeDetailPage from "@/pages/AnimeDetail";
 import CreateThread from "@/components/CreateThread";
 import ThreadDetailPage from "@/pages/ThreadDetailPage";
+import LoginPage from "@/pages/Login";
+import RegisterPage from "@/pages/Register";
+
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -31,6 +35,8 @@ const App = () => (
           <Route path="/threads/create" element={<CreateThread />} />
           <Route path="/anime/:id" element={<AnimeDetailPage />} />
           <Route path="/threads/:id" element={<ThreadDetailPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

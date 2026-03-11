@@ -1,5 +1,5 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { PlayCircle, BookOpen, ExternalLink } from "lucide-react";
 import type { Anime } from "../types/anime";
 import AnimeThreadList from "../components/anime/AnimeThreadList";
@@ -10,13 +10,28 @@ type ThreadFormState = {
   content: string;
 };
 
+type LoggedInUser = {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+};
+
 const AnimeDetailPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [anime, setAnime] = useState<Anime | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [threadRefreshKey, setThreadRefreshKey] = useState(0);
+  const [loggedInUser, setLoggedInUser] = useState<LoggedInUser | null>(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   const [form, setForm] = useState<ThreadFormState>({
     forum_id: "",
@@ -24,7 +39,19 @@ const AnimeDetailPage = () => {
     content: "",
   });
 
-  const userId = 1;
+  useEffect(() => {
+    const rawUser = localStorage.getItem("user");
+
+    if (rawUser) {
+      try {
+        const parsedUser = JSON.parse(rawUser);
+        setLoggedInUser(parsedUser);
+      } catch (error) {
+        console.error("Failed to parse user:", error);
+        localStorage.removeItem("user");
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchAnimeDetail = async () => {
@@ -64,6 +91,12 @@ const AnimeDetailPage = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!loggedInUser) {
+      alert("Please login first to create a thread.");
+      navigate("/");
+      return;
+    }
+
     if (!anime) return;
 
     if (!anime.uuid) {
@@ -76,7 +109,7 @@ const AnimeDetailPage = () => {
     try {
       const payload = {
         forum_id: form.forum_id,
-        user_id: userId,
+        user_id: loggedInUser.id,
         anime_uuid: anime.uuid,
         title: form.title,
         slug: makeSlug(form.title),
@@ -94,7 +127,10 @@ const AnimeDetailPage = () => {
       const data = await res.json();
 
       if (data.success) {
-        alert("Thread created!");
+        setToast({
+          message: "Thread created successfully!",
+          type: "success",
+        });
         setForm({
           forum_id: "",
           title: "",
@@ -103,11 +139,17 @@ const AnimeDetailPage = () => {
         setShowForm(false);
         setThreadRefreshKey((prev) => prev + 1);
       } else {
-        alert(data.error || "Failed to create thread");
+        setToast({
+          message: data.error || "Failed to create thread",
+          type: "error",
+        });
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      setToast({
+        message: "Something went wrong",
+        type: "error",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -159,20 +201,54 @@ const AnimeDetailPage = () => {
 
             <div className="mt-6 flex flex-wrap gap-3">
               <button
-                onClick={() => setShowForm((prev) => !prev)}
+                onClick={() => {
+                  if (!loggedInUser) {
+                    setShowLoginModal(true);
+                    return;
+                  }
+                  setShowForm((prev) => !prev);
+                }}
                 className="inline-flex items-center rounded-xl bg-primary px-5 py-3 font-medium text-primary-foreground transition hover:brightness-105"
               >
                 {showForm ? "Cancel" : "Post Thread"}
               </button>
+              {showLoginModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                  <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+                    <h2 className="text-xl font-semibold text-slate-900">
+                      Login Required
+                    </h2>
+
+                    <p className="mt-2 text-sm text-slate-500">
+                      You need to login before creating a thread.
+                    </p>
+
+                    <div className="mt-6 flex justify-end gap-3">
+                      <button
+                        onClick={() => setShowLoginModal(false)}
+                        className="rounded-lg border px-4 py-2 text-sm hover:bg-slate-100"
+                      >
+                        Cancel
+                      </button>
+
+                      <button
+                        onClick={() => navigate("/login")}
+                        className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:brightness-105"
+                      >
+                        Login
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Quick action cards */}
         <div className="grid gap-4 border-t border-border bg-muted/20 p-6 md:grid-cols-2">
-          {/* Streaming Card */}
           <Link
-            to={`/streaming?anime=${anime.id}`}
+            to={`http://206.189.38.230/anime/${anime.id}`}
             className="group relative block overflow-hidden rounded-3xl border border-border shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
           >
             <img
@@ -202,9 +278,8 @@ const AnimeDetailPage = () => {
             </div>
           </Link>
 
-          {/* Book Card */}
           <Link
-            to={`/anime-book?anime=${anime.id}`}
+            to={`http://159.223.76.78/books?anime=${anime.id}`}
             className="group block rounded-3xl border border-border bg-background p-5 shadow-sm transition-all hover:-translate-y-1 hover:border-violet-400 hover:shadow-xl"
           >
             <div className="flex h-full flex-col justify-between gap-5 sm:flex-row sm:items-center">
@@ -232,9 +307,7 @@ const AnimeDetailPage = () => {
               <div className="shrink-0">
                 <div className="overflow-hidden rounded-2xl border border-border shadow-sm">
                   <img
-                    src={
-                      anime.image_url
-                    }
+                    src={anime.image_url}
                     alt={`${anime.title} book`}
                     className="h-36 w-24 object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -246,7 +319,7 @@ const AnimeDetailPage = () => {
       </div>
 
       {/* Thread form */}
-      {showForm && (
+      {showForm && loggedInUser && (
         <div className="mt-10 rounded-3xl border border-border bg-card p-6 shadow-sm">
           <div className="mb-5">
             <h2 className="text-xl font-semibold">
