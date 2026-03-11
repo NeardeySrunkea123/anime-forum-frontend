@@ -1,54 +1,76 @@
-import { MessageSquare, Eye, Pin } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { ForumTopic } from "@/data/mockData";
+import { MessageSquare, Eye } from "lucide-react";
 
-interface TopicCardProps {
-  topic: ForumTopic;
-}
-
-const categoryColors: Record<string, string> = {
-  General: "bg-sky/15 text-sky",
-  Discussion: "bg-primary/10 text-primary",
-  Fun: "bg-peach/20 text-peach",
-  Recommendations: "bg-lavender/15 text-lavender",
-  Manga: "bg-mint/15 text-mint",
+type Props = {
+  id: number;
+  title: string;
+  author: string;
+  category: string;
+  replies: number;
+  views: number;
+  likes?: number;
+  createdAt: string;
 };
 
-const TopicCard = ({ topic }: TopicCardProps) => {
+function formatTimeAgo(dateString: string) {
+  const now = new Date();
+  const created = new Date(dateString);
+  const diffMs = now.getTime() - created.getTime();
+
+  const minutes = Math.floor(diffMs / 1000 / 60);
+  const hours = Math.floor(diffMs / 1000 / 60 / 60);
+  const days = Math.floor(diffMs / 1000 / 60 / 60 / 24);
+
+  if (minutes < 1) return "just now";
+  if (minutes < 60) return `${minutes} min ago`;
+  if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+  return `${days} day${days > 1 ? "s" : ""} ago`;
+}
+
+export default function TopicCard({
+  id,
+  title,
+  author,
+  category,
+  replies,
+  views,
+  likes = 0,
+  createdAt,
+}: Props) {
   return (
     <Link
-      to={`/forum/${topic.id}`}
-      className="block p-4 rounded-2xl bg-card border border-border/40 hover:border-primary/30 transition-all duration-200 hover:shadow-[var(--shadow-soft)] group"
+      to={`/threads/${id}`}
+      className="block rounded-3xl border border-border bg-card px-5 py-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-pink-400 hover:shadow-md"
     >
-      <div className="flex items-start gap-3">
-        <span className="text-2xl flex-shrink-0 mt-0.5">{topic.avatar}</span>
-
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            {topic.pinned && <Pin className="w-3 h-3 text-primary flex-shrink-0" />}
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${categoryColors[topic.category] || "bg-muted text-muted-foreground"}`}>
-              {topic.category}
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <div className="mb-2">
+            <span className="inline-flex rounded-full bg-muted px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
+              {category}
             </span>
           </div>
 
-          <h3 className="font-display font-semibold text-foreground text-sm group-hover:text-primary transition-colors line-clamp-1">
-            {topic.title}
+          <h3 className="truncate text-lg font-semibold text-foreground">
+            {title}
           </h3>
 
-          <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
-            <span className="font-medium">by {topic.author}</span>
-            <span className="flex items-center gap-1">
-              <MessageSquare className="w-3 h-3" /> {topic.replies}
+          <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <span>by {author}</span>
+            <span className="inline-flex items-center gap-1.5">
+              <MessageSquare className="h-4 w-4" />
+              {replies}
             </span>
-            <span className="flex items-center gap-1">
-              <Eye className="w-3 h-3" /> {topic.views}
+            <span className="inline-flex items-center gap-1.5">
+              <Eye className="h-4 w-4" />
+              {views}
             </span>
-            <span className="ml-auto text-muted-foreground/70">{topic.lastActivity}</span>
           </div>
+        </div>
+
+        <div className="shrink-0 pt-1 text-sm text-muted-foreground">
+          {formatTimeAgo(createdAt)}
         </div>
       </div>
     </Link>
   );
-};
-
-export default TopicCard;
+}

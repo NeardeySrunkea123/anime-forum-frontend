@@ -7,9 +7,11 @@ import Navbar from "@/components/Navbar";
 import Index from "./pages/Index";
 import AnimeList from "./pages/AnimeList";
 import Forum from "./pages/Forum";
-import TopicDetail from "./pages/TopicDetail";
 import NotFound from "./pages/NotFound";
-
+import AnimeListPage from "@/pages/AnimeList";
+import AnimeDetailPage from "@/pages/AnimeDetail";
+import CreateThread from "@/components/CreateThread";
+import ThreadDetailPage from "@/pages/ThreadDetailPage";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -23,8 +25,12 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/anime" element={<AnimeList />} />
           <Route path="/forum" element={<Forum />} />
-          <Route path="/forum/:id" element={<TopicDetail />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/anime" element={<AnimeListPage />} />
+          <Route path="/anime/:id" element={<AnimeDetailPage />} />
+          <Route path="/threads/create" element={<CreateThread />} />
+          <Route path="/anime/:id" element={<AnimeDetailPage />} />
+          <Route path="/threads/:id" element={<ThreadDetailPage />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
