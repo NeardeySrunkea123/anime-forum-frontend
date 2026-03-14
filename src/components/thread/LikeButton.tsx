@@ -1,55 +1,57 @@
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 type Props = {
   postId: number;
+  liked: boolean;
   onRefresh: () => void;
 };
 
-export default function LikeButton({ postId, onRefresh }: Props) {
-  const [loading, setLoading] = useState(false);
-  const [liked, setLiked] = useState(false);
-
-  const userId = 1;
+export default function LikeButton({ postId, liked, onRefresh }: Props) {
+  const navigate = useNavigate();
+  const rawUser = localStorage.getItem("user");
+  const user = rawUser ? JSON.parse(rawUser) : null;
+  const userId = user?.id;
 
   const handleClick = async () => {
-    try {
-      setLoading(true);
+    if (!userId) return;
 
-      const res = await fetch(
-        `http://152.42.177.225/api/posts/${postId}/like`,
-        {
-          method: liked ? "DELETE" : "POST",
+    try {
+      if (liked) {
+        await fetch(
+          `http://localhost:3003/api/posts/${postId}/like/${userId}`,
+          {
+            method: "DELETE",
+          },
+        );
+      } else {
+        await fetch(`http://localhost:3003/api/posts/${postId}/like`, {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ user_id: userId }),
-        },
-      );
-
-      const result = await res.json();
-
-      if (result.success) {
-        setLiked((prev) => !prev);
-        onRefresh();
-      } else {
-        alert(result.error || "Failed to update like");
+          body: JSON.stringify({
+            user_id: userId,
+          }),
+        });
       }
+
+      onRefresh();
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong");
-    } finally {
-      setLoading(false);
+      console.error("Like error:", error);
     }
   };
 
+  // If not logged in
+  if (!userId) {
+    return <button onClick={() => navigate("/login")}>🤍 Like</button>;
+  }
+
   return (
     <button
-      type="button"
       onClick={handleClick}
-      disabled={loading}
-      className="rounded-lg border px-3 py-1 text-xs"
+      className="text-sm font-medium transition hover:scale-105"
     >
-      {loading ? "..." : liked ? "Unlike" : "Like"}
+      {liked ? "❤️ Liked" : "🤍 Like"}
     </button>
   );
 }

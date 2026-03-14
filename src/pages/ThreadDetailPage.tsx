@@ -4,14 +4,36 @@ import type { Thread, Post } from "../types/thread";
 import CommentForm from "../components/thread/CommentForm";
 import CommentList from "../components/thread/CommentList";
 
+type LoggedInUser = {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+};
+
 export default function ThreadDetailPage() {
   const { id } = useParams();
   const [thread, setThread] = useState<Thread | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loggedInUser, setLoggedInUser] = useState<LoggedInUser | null>(null);
+
+  useEffect(() => {
+    const rawUser = localStorage.getItem("user");
+
+    if (rawUser) {
+      try {
+        const parsedUser = JSON.parse(rawUser);
+        setLoggedInUser(parsedUser);
+      } catch (error) {
+        console.error("Failed to parse user:", error);
+        localStorage.removeItem("user");
+      }
+    }
+  }, []);
 
   const fetchThread = async () => {
-    const res = await fetch(`http://152.42.177.225/api/threads/${id}`);
+    const res = await fetch(`http://localhost:3003/api/threads/${id}`);
     const result = await res.json();
 
     if (result.success) {
@@ -20,7 +42,7 @@ export default function ThreadDetailPage() {
   };
 
   const fetchPosts = async () => {
-    const res = await fetch(`http://152.42.177.225/api/threads/${id}/posts`);
+    const res = await fetch(`http://localhost:3003/api/threads/${id}/posts`);
     const result = await res.json();
 
     if (result.success) {
@@ -72,7 +94,11 @@ export default function ThreadDetailPage() {
       </div>
 
       <div className="mb-6">
-        <CommentForm threadId={thread.id} onSuccess={fetchPosts} />
+        <CommentForm
+          threadId={thread.id}
+          onSuccess={fetchPosts}
+          userId={loggedInUser?.id ?? null}
+        />
       </div>
 
       <CommentList posts={posts} onRefresh={fetchPosts} />

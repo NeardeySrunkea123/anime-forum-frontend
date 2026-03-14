@@ -54,7 +54,7 @@ const ForumPage = () => {
   const fetchThreads = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://152.42.177.225/api/threads");
+      const res = await fetch("http://localhost:3003/api/threads");
       const result = await res.json();
 
       if (result.success) {
@@ -103,7 +103,7 @@ const ForumPage = () => {
         content: newContent,
       };
 
-      const res = await fetch("http://152.42.177.225/api/threads", {
+      const res = await fetch("http://localhost:3003/api/threads", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -15,6 +15,35 @@ export type AuthResponse = {
   message?: string;
 };
 
+async function parseJsonSafe(res: Response) {
+  const text = await res.text();
+
+  try {
+    return text ? JSON.parse(text) : {};
+  } catch {
+    throw new Error(`Invalid JSON response: ${text}`);
+  }
+}
+
+export async function sendLoginLog(userId: number) {
+  try {
+    await fetch(`${API_BASE_URL}/logs`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        action: "login",
+        subsystem: "anime_forum",
+        details: "Login from anime_forum frontend",
+      }),
+    });
+  } catch (error) {
+    console.error("Failed to send login log:", error);
+  }
+}
+
 export async function loginUser(data: {
   email: string;
   password: string;
@@ -23,14 +52,24 @@ export async function loginUser(data: {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-Subsystem": "anime_forum",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      subsystem: "anime_forum",
+    }),
   });
 
-  const result = await res.json();
+  const result: AuthResponse = await parseJsonSafe(res);
 
-  if (!res.ok) {
+  if (!res.ok || !result.success) {
     throw new Error(result.message || "Login failed");
+  }
+
+  const user = result.user || result.data;
+
+  if (user?.id) {
+    await sendLoginLog(user.id);
   }
 
   return result;
@@ -45,8 +84,12 @@ export async function registerUser(data: {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-Subsystem": "anime_forum",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      subsystem: "anime_forum",
+    }),
   });
 
   const result = await res.json();
@@ -66,21 +109,24 @@ export async function validateToken(token: string): Promise<AuthResponse> {
     },
   });
 
-  const result = await res.json();
+  const result: AuthResponse = await parseJsonSafe(res);
 
-  if (!res.ok) {
+  if (!res.ok || !result.success) {
     throw new Error(result.message || "Token invalid");
   }
 
   return result;
 }
 
-export function saveAuth(token: string, user: {
-  id: number;
-  username: string;
-  email: string;
-  role: string;
-}) {
+export function saveAuth(
+  token: string,
+  user: {
+    id: number;
+    username: string;
+    email: string;
+    role: string;
+  }
+) {
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
   window.dispatchEvent(new Event("auth-changed"));
@@ -101,7 +147,7 @@ export function getStoredUser(): AuthUser | null {
   if (!raw) return null;
 
   try {
-    return JSON.parse(raw);
+    return JSON.parse(raw) as AuthUser;
   } catch {
     return null;
   }

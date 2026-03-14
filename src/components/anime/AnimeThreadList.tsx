@@ -17,7 +17,7 @@ export default function AnimeThreadList({ animeUuid, refreshKey = 0 }: Props) {
         setLoading(true);
 
         const res = await fetch(
-          `http://152.42.177.225/api/threads?anime_uuid=${animeUuid}`,
+          `http://localhost:3003/api/threads?anime_uuid=${animeUuid}`,
         );
         const result = await res.json();
 

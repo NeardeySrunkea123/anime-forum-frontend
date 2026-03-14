@@ -15,7 +15,7 @@ export type Thread = {
     post_count: string;
     created_at: string;
   };
-  
+
   export type Post = {
     id: number;
     thread_id: number;
@@ -23,7 +23,6 @@ export type Thread = {
     content: string;
     created_at: string;
     author_username: string;
-    author_avatar?: string;
-    author_role?: string;
-    like_count: string;
+    like_count: number;
+    liked: boolean;
   };

@@ -85,8 +85,8 @@ export default function ThreadCard({ thread }: Props) {
 
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-zinc-500">
               <span>by {thread.author_username}</span>
-              <span>💬 {thread.post_count}</span>
-              <span>👁 {thread.views}</span>
+              <span>💬 {thread.post_count ?? 0}</span>
+              <span>👁 {thread.views ?? 0}</span>
             </div>
           </div>
         </div>

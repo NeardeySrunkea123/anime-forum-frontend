@@ -1,23 +1,28 @@
 import { useState, ChangeEvent, FormEvent } from "react";
+import { Link } from "react-router-dom";
 
 type Props = {
   threadId: number;
   onSuccess: () => void;
+  userId?: number | null;
 };
 
-export default function CommentForm({ threadId, onSuccess }: Props) {
+export default function CommentForm({ threadId, onSuccess, userId }: Props) {
   const [content, setContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  const userId = 1;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!userId) {
+      alert("Please login to reply.");
+      return;
+    }
+
     try {
       setSubmitting(true);
 
-      const res = await fetch("http://152.42.177.225/api/posts", {
+      const res = await fetch("http://localhost:3003/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,6 +49,24 @@ export default function CommentForm({ threadId, onSuccess }: Props) {
       setSubmitting(false);
     }
   };
+
+  if (!userId) {
+    return (
+      <div className="space-y-3 rounded-2xl border bg-card p-5 text-center">
+        <h3 className="text-lg font-semibold">Reply to this thread</h3>
+        <p className="text-sm text-muted-foreground">
+          You must be logged in to post a reply.
+        </p>
+
+        <Link
+          to="/login"
+          className="inline-flex rounded-xl bg-primary px-5 py-3 font-medium text-primary-foreground"
+        >
+          Login to Reply
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <form

@@ -34,7 +34,11 @@ export default function CommentList({ posts, onRefresh }: Props) {
 
           <p className="mb-4 text-sm leading-7">{post.content}</p>
 
-          <LikeButton postId={post.id} onRefresh={onRefresh} />
+          <LikeButton
+            postId={post.id}
+            onRefresh={onRefresh}
+            liked={post.liked}
+          />
         </div>
       ))}
     </div>
