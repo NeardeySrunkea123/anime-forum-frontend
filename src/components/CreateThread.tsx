@@ -66,7 +66,7 @@ export default function ThreadsCreatePage() {
         content: form.content,
       };
 
-      const res = await fetch("http://localhost:3003/api/threads", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/threads`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

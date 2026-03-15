@@ -18,13 +18,13 @@ export default function LikeButton({ postId, liked, onRefresh }: Props) {
     try {
       if (liked) {
         await fetch(
-          `http://localhost:3003/api/posts/${postId}/like/${userId}`,
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/posts/${postId}/like/${userId}`,
           {
             method: "DELETE",
           },
         );
       } else {
-        await fetch(`http://localhost:3003/api/posts/${postId}/like`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/posts/${postId}/like`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

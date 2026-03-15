@@ -22,7 +22,7 @@ const AnimeListPage = () => {
   useEffect(() => {
     const fetchAnime = async () => {
       try {
-        const res = await fetch("http://localhost:3003/api/anime");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/anime`);
         const result = await res.json();
 
         console.log("Anime API result:", result);

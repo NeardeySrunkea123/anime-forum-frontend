@@ -22,7 +22,7 @@ export default function CommentForm({ threadId, onSuccess, userId }: Props) {
     try {
       setSubmitting(true);
 
-      const res = await fetch("http://localhost:3003/api/posts", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/posts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
