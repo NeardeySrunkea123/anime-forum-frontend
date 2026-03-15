@@ -279,7 +279,7 @@ const AnimeDetailPage = () => {
           </Link>
 
           <Link
-            to={`http://159.223.76.78/books?anime=${anime.id}`}
+            to={`http://159.223.76.78/books/${anime.id}`}
             className="group block rounded-3xl border border-border bg-background p-5 shadow-sm transition-all hover:-translate-y-1 hover:border-violet-400 hover:shadow-xl"
           >
             <div className="flex h-full flex-col justify-between gap-5 sm:flex-row sm:items-center">
