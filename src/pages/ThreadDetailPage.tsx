@@ -42,8 +42,9 @@ export default function ThreadDetailPage() {
   };
 
   const fetchPosts = async () => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
     const res = await fetch(
-      `http://188.166.184.64/api/threads/${id}/posts`,
+      `http://188.166.184.64/api/threads/${id}/posts?user_id=${user.id}`,
     );
     const result = await res.json();
 
