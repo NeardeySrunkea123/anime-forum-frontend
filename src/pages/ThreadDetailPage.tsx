@@ -33,7 +33,7 @@ export default function ThreadDetailPage() {
   }, []);
 
   const fetchThread = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/threads/${id}`);
+    const res = await fetch(`http://188.166.184.64/api/threads/${id}`);
     const result = await res.json();
 
     if (result.success) {
@@ -43,7 +43,7 @@ export default function ThreadDetailPage() {
 
   const fetchPosts = async () => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/threads/${id}/posts`,
+      `http://188.166.184.64/api/threads/${id}/posts`,
     );
     const result = await res.json();
 

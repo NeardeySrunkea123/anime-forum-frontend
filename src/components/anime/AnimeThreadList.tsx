@@ -17,7 +17,7 @@ export default function AnimeThreadList({ animeUuid, refreshKey = 0 }: Props) {
         setLoading(true);
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/threads?anime_uuid=${animeUuid}`,
+          `http://188.166.184.64/api/threads?anime_uuid=${animeUuid}`,
         );
         const result = await res.json();
 

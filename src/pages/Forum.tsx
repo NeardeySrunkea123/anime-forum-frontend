@@ -54,7 +54,7 @@ const ForumPage = () => {
   const fetchThreads = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/threads`);
+      const res = await fetch(`http://188.166.184.64/api/threads`);
       const result = await res.json();
 
       if (result.success) {
@@ -103,7 +103,7 @@ const ForumPage = () => {
         content: newContent,
       };
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/threads`, {
+      const res = await fetch(`http://188.166.184.64/api/threads`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

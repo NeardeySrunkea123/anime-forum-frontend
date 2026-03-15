@@ -58,7 +58,7 @@ const Index = () => {
   useEffect(() => {
     const fetchAnime = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/anime`);
+        const res = await fetch(`http://188.166.184.64/api/anime`);
         const result = await res.json();
 
         if (result.success) {
@@ -73,7 +73,7 @@ const Index = () => {
 
     const fetchThreads = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/threads`);
+        const res = await fetch(`http://188.166.184.64/api/threads`);
         const result = await res.json();
 
         if (result.success) {

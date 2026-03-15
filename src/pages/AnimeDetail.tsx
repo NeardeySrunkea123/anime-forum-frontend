@@ -56,7 +56,7 @@ const AnimeDetailPage = () => {
   useEffect(() => {
     const fetchAnimeDetail = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/anime/${id}`);
+        const res = await fetch(`http://188.166.184.64/api/anime/${id}`);
         const result = await res.json();
 
         if (result.success) {
@@ -116,7 +116,7 @@ const AnimeDetailPage = () => {
         content: form.content,
       };
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/threads`, {
+      const res = await fetch(`http://188.166.184.64/api/threads`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
